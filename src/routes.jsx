@@ -114,12 +114,6 @@ export const routes = [
       },
       {
         exact: 'true',
-        path: '/branch/update-branch',
-        element: lazy(() => import('./views/branch/UpdateBranch'))
-      },
-    
-      {
-        exact: 'true',
         path: '/model/add-model',
         element: lazy(() => import('./views/model/AddModel'))
       },
