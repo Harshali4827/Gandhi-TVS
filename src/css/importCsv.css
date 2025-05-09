@@ -1,0 +1,30 @@
+.import-csv-container {
+    display: inline-block;
+  }
+  
+  .import-csv-button {
+    background-color: #dc4226;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  
+  .import-csv-button:hover {
+    background-color: #b04058;
+  }
+  
+  .import-csv-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .import-icon {
+    font-size: 14px;
+  }

@@ -1,0 +1,267 @@
+.table-container {
+    padding: 15px;
+    background-color: #f6f7fb;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px 1px rgb(0 0 0 / 19%);
+  }
+  
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+  
+  .new-user-btn {
+    padding: 8px 4px;
+    background-color: #dc4226;
+    color: #ffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 2px;
+  }
+  
+  .new-user-btn:hover {
+    background-color: #b04058;
+  }
+  .action-button{
+    background: #dc4226;
+    color: white;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 5px;
+  }
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-left: auto;
+  }
+  
+  .btn2 {
+    width: 45px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 1px;
+    box-shadow: inset 2px 2px 5px rgb(212 36 40);
+    border: none;
+    font-size: 21px;
+    color: black;
+  }
+  
+  .btn2:hover {
+    background-color: #dc4226;
+    color:#ffff;
+  }
+  .csv-link{
+    color: black !important;
+  }
+  
+  .csv-link:hover {
+    color: white !important;
+  }
+  
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+  }
+  
+  .responsive-table th,
+  .responsive-table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+  .responsive-table th {
+    background: #243c7c;
+    color: #ffff;
+    font-weight: 500;
+  }
+  .search-icon-data {
+    display: flex;
+    align-items: center;
+    border: 0.5px solid lightgray;
+    height: 35px;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 0 10px;
+    gap: 5px;
+    width: 100%;
+    max-width: 350px; 
+    box-sizing: border-box; 
+    overflow: hidden;
+    margin-bottom: 5px;
+  }
+  
+  .search-icon-data input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    padding: 0;
+  }
+  
+  .search-icon-data input::placeholder {
+    font-size: 12px;
+    color: gray;
+  }
+  
+  .search-icon-data svg {
+    flex-shrink: 0; 
+    width: 24px; 
+    height: 24px; 
+    color: #888;
+    margin-left: 5px;
+  }
+  
+  
+  .status-text {
+    display: inline-block;
+    border-radius: 5px;
+  }
+  
+  .status-text {
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+  
+  .status-text.active {
+    color: green;
+  }
+  
+  .status-text.inactive {
+    color: crimson;
+  }
+  
+  .status-icon {
+    font-size: 1.2rem;
+  }
+  
+  .active-icon {
+    color: green;
+  }
+  
+  .inactive-icon {
+    color: crimson;
+  }
+  
+  .pagination-options-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+  }
+  .rows-per-page {
+    display: flex;
+    align-items: center;
+    }
+    
+    .rows-per-page label {
+    margin-right: 10px;
+    }
+    
+    .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    }
+    
+    .page-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    }
+    
+    .page-icon:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    }
+  @media(min-width:1280){
+    .buttons {
+      /* justify-content: flex-start;
+      gap: 8px; */
+      margin-right:178px;
+    }
+  }
+  @media (max-width: 768px) {
+    .table-container{
+      padding: 10px;
+      margin: 2px;
+    }
+    .table-header h3 {
+      font-size: 16px;
+    }
+  
+    .new-user-btn {
+      padding: 6px 12px;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+    .search-icon-data {
+      max-width: 100%;
+      margin-left: 0; 
+    }
+    .search-icon-data svg {
+      margin-left: 10px; 
+    }
+    .responsive-table th,
+    .responsive-table td {
+      padding: 8px;
+      font-size: 12px;
+    }
+    .search-icon-data svg{
+      margin-left: 10px;
+    }
+  }
+  .Link{
+     text-decoration: none;
+     color: #000000;
+  }
+  @media print {
+    .buttons, .new-user-btn, .pagination-options-container {
+      display: none !important;
+    }
+  }
+  
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+  }
+  
+  
+  
+  @media screen and (max-width: 768px) {
+    .table-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .buttons {
+      justify-content: flex-start;
+      gap: 8px;
+      margin-right:0px;
+    }
+    .new-user-btn{
+      margin-top: 5px;
+      margin-bottom: 0px;
+    }
+  }

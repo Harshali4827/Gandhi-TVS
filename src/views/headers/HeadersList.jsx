@@ -1,0 +1,201 @@
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Menu, MenuItem } from '@mui/material';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import {
+  faCopy,
+  faFileExcel,
+  faFilePdf,
+  faFileCsv,
+} from '@fortawesome/free-solid-svg-icons';
+import '../../css/table.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getDefaultSearchFields, useTableFilter } from 'utils/tableFilters';
+import { usePagination } from 'utils/pagination.jsx'; 
+import { copyToClipboard, exportToExcel, exportToPdf} from 'utils/tableExports';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import axiosInstance from 'axiosInstance';
+import { confirmDelete, showError, showSuccess } from 'utils/sweetAlerts';
+import ImportCSV from 'views/csv/ImportCSV';
+
+const HeadersList = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [menuId, setMenuId] = useState(null);
+  const {
+    data,
+    setData,
+    filteredData,
+    setFilteredData,
+    handleFilter,
+  } = useTableFilter([]);
+  
+  const {
+    currentRecords,
+    PaginationOptions
+  } = usePagination(Array.isArray(filteredData) ? filteredData : []);
+  
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const fetchData = async () => {
+    try {
+      const response = await axiosInstance.get(`/headers?sort=priority`);
+      setData(response.data.data.headers);
+      setFilteredData(response.data.data.headers);
+
+    } catch (error) {
+      console.log('Error fetching data', error);
+    }
+  };
+  
+  const handleImportSuccess = () => {
+    fetchData();
+  };
+  
+  const handleClick = (event, id) => {
+    setAnchorEl(event.currentTarget);
+    setMenuId(id);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setMenuId(null);
+  };
+
+  const handleExcelExport = () => exportToExcel(data, 'HeadersDetails');
+  const handlePdfExport = () => exportToPdf(
+    data,
+    ['name', 'address', 'city', 'state', 'pincode', 'phone', 'email', 'gst_number'],
+    'HeadersDetails'
+  );
+  
+  const handleCSVExportFromAPI = async () => {
+    try {
+      const response = await axiosInstance.get('/csv/export-template?filled=true', {
+        responseType: 'blob', 
+      });
+  
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'exported_data.csv'); 
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error('CSV export failed:', error);
+      showError('Failed to export CSV.');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    const result = await confirmDelete();
+    if (result.isConfirmed) {
+      try {
+        await axiosInstance.delete(`/headers/${id}`);
+        setData(data.filter((header) => header.id !== id));
+        fetchData();
+        showSuccess();
+      } catch (error) {
+        console.log(error);
+        showError();
+      }
+    }
+  };
+  return (
+    <div className="table-container">
+      <div className="table-header">
+        <div className="search-icon-data">
+          <input type="text" placeholder="Search.."   onChange={(e) =>
+               handleFilter(e.target.value, getDefaultSearchFields('headers'))
+          }/>
+          <SearchOutlinedIcon />
+        </div>
+        <div className="buttons">
+        <CopyToClipboard text={copyToClipboard(data)}>
+            <button className="btn2" title="Copy">
+              <FontAwesomeIcon icon={faCopy} />
+            </button>
+          </CopyToClipboard>
+          <button className="btn2" title="Excel" onClick={handleExcelExport}>
+            <FontAwesomeIcon icon={faFileExcel} />
+          </button>
+          <button className="btn2" title="PDF" onClick={handlePdfExport}>
+            <FontAwesomeIcon icon={faFilePdf} />
+          </button>
+          <button className="btn2" title="Export CSV" onClick={handleCSVExportFromAPI}>
+                  <FontAwesomeIcon icon={faFileCsv} />
+           </button>
+          <ImportCSV
+            endpoint="/csv/import" 
+            onSuccess={handleImportSuccess}
+            buttonText="Import CSV"
+          />
+        </div>
+        <Link to="/headers/add-header">
+          <button className="new-user-btn">+ New Header</button>
+        </Link>
+      </div>
+      <div className="table-responsive">
+        <table className="responsive-table" style={{ overflow: 'auto' }}>
+          <thead>
+            <tr>
+              <th>Sr.no</th>
+               <th>Name</th>
+               <th>Category key</th>
+               <th>Type</th>
+               <th>Priority number</th>
+               <th>Page number</th>
+               <th>HSN code</th>
+               <th>GST rate</th>
+               <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentRecords.length === 0 ? (
+              <tr>
+                <td colSpan="4">No headers available</td>
+              </tr>
+            ) : (
+              currentRecords.map((header, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{header.header_key}</td>
+                  <td>{header.category_key}</td>
+                  <td>{header.metadata?.type || ''}</td>
+                  <td>{header.priority}</td>
+                  <td>{header.metadata?.page_no || ''}</td>
+                  <td>{header.metadata?.hsn_code || ''}</td>
+                  <td>{header.metadata?.gst_rate || ''}</td>
+
+                  <td>
+                    <button
+                      className="action-button"
+                      onClick={(event) => handleClick(event, header._id)}
+                    >
+                      Action
+                    </button>
+                    <Menu
+                      id={`action-menu-${header._id}`}
+                      anchorEl={anchorEl}
+                      open={menuId === header._id}
+                      onClose={handleClose}
+                    >
+                      <Link className="Link" to={`/headers/update-header/${header._id}`}>
+                        <MenuItem style={{ color: 'black' }}>Edit</MenuItem>
+                      </Link>
+                      {/* <MenuItem onClick={() => handleDelete(header._id)}>Delete</MenuItem> */}
+                    </Menu>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+      <PaginationOptions/>
+     </div>
+  );
+};
+
+export default HeadersList;
