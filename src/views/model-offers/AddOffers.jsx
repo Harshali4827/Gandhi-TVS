@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../../css/form.css';
 import { CInputGroup, CInputGroupText, CFormInput, CFormSwitch, CFormCheck } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
-import { cilBike } from '@coreui/icons';
+import { cilBike, cilDescription, cilImage, cilLink, cilText } from '@coreui/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { showFormSubmitError, showFormSubmitToast } from 'utils/sweetAlerts';
 import FormButtons from 'utils/FormButtons';
@@ -148,7 +148,7 @@ function AddOffer() {
                 </div>
                 <CInputGroup>
                   <CInputGroupText className="input-icon">
-                    <CIcon icon={cilBike} />
+                    <CIcon icon={cilText} />
                   </CInputGroupText>
                   <CFormInput
                     type="text"
@@ -167,7 +167,7 @@ function AddOffer() {
                 </div>
                 <CInputGroup>
                   <CInputGroupText className="input-icon">
-                    <CIcon icon={cilBike} />
+                    <CIcon icon={cilDescription} />
                   </CInputGroupText>
                   <CFormInput
                     type="text"
@@ -182,7 +182,7 @@ function AddOffer() {
                 <span className="details">Url</span>
                 <CInputGroup>
                   <CInputGroupText className="input-icon">
-                    <CIcon icon={cilBike} />
+                    <CIcon icon={cilLink} />
                   </CInputGroupText>
                   <CFormInput
                     type="url"
@@ -196,7 +196,7 @@ function AddOffer() {
                 <span className="details">Image</span>
                 <CInputGroup>
                   <CInputGroupText className="input-icon">
-                    <CIcon icon={cilBike} />
+                    <CIcon icon={cilImage} />
                   </CInputGroupText>
                   <CFormInput
                     type="file"

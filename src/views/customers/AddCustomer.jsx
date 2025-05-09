@@ -134,7 +134,7 @@ const [formData,setFormData] = useState({
               </div>
               <CInputGroup>
                 <CInputGroupText className="input-icon">
-                  <CIcon icon={cilPhone} />
+                  <CIcon icon={cilBuilding} />
                 </CInputGroupText>
                 <CFormInput
                   type="text"

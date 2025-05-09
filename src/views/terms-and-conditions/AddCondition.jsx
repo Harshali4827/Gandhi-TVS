@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../../css/form.css'
 import { CInputGroup, CInputGroupText, CFormInput, CFormSwitch} from '@coreui/react';
 import CIcon from '@coreui/icons-react';
-import { cilBike } from '@coreui/icons';
+import { cilBike, cilDescription, cilListNumbered, cilText } from '@coreui/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { showFormSubmitError, showFormSubmitToast } from 'utils/sweetAlerts';
 import FormButtons from 'utils/FormButtons';
@@ -82,7 +82,7 @@ const [formData,setFormData] = useState({
                 <span className="details">Title</span>
               <CInputGroup>
                 <CInputGroupText className="input-icon">
-                  <CIcon icon={cilBike} />
+                  <CIcon icon={cilText} />
                 </CInputGroupText>
                 <CFormInput
                   type="text"
@@ -99,7 +99,7 @@ const [formData,setFormData] = useState({
                 </div>
               <CInputGroup>
                 <CInputGroupText className="input-icon">
-                  <CIcon icon={cilBike} />
+                  <CIcon icon={cilDescription} />
                 </CInputGroupText>
                 <CFormInput
                   type="text"
@@ -117,7 +117,7 @@ const [formData,setFormData] = useState({
               </div>
               <CInputGroup>
                 <CInputGroupText className="input-icon">
-                  <CIcon icon={cilBike} />
+                  <CIcon icon={cilListNumbered} />
                 </CInputGroupText>
                 <CFormInput
                   type="text"

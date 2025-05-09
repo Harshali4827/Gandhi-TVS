@@ -10,6 +10,7 @@ import {
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import { exportToModelPdf } from 'utils/tableExports';
+import { useParams } from 'react-router-dom';
 
 const ModelList = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -18,6 +19,7 @@ const ModelList = () => {
   const [branches, setBranches] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState(null);
   const [isFiltered, setIsFiltered] = useState(false);
+  const { branchId } = useParams();
   const {
     data,
     setData,
@@ -77,7 +79,11 @@ const ModelList = () => {
   const handleImportSuccess = () => {
     fetchData(selectedBranch);
   };
-
+  const getBranchNameById = (branchId) => {
+    const branch = branches.find(b => b._id === branchId);
+    return branch ? branch.name : '';
+  };
+  
   const handleBranchFilter = () => {
     Swal.fire({
       title: 'Filter by Branch',
@@ -112,7 +118,7 @@ const ModelList = () => {
       }
     });
   };
-
+  
   const clearBranchFilter = () => {
     setSelectedBranch(null);
     fetchData();
@@ -187,7 +193,10 @@ const ModelList = () => {
 
   return (
     <div>
-      <h4>Models {selectedBranch && `(Filtered by Branch)`}</h4>
+      <h4>
+     Models {selectedBranch && `(Filtered by ${getBranchNameById(selectedBranch)})`}
+     </h4>
+
       <div className="table-container">
         <div className="table-header">
           <div className="search-icon-data">
@@ -205,7 +214,6 @@ const ModelList = () => {
               onClick={handleBranchFilter}
             >
               <FontAwesomeIcon icon={faFilter} />
-              {isFiltered && ' Filtered'}
             </button>
             <CopyToClipboard text={copyToClipboard(data)}>
               <button className="btn2" title="Copy">
@@ -271,9 +279,20 @@ const ModelList = () => {
                         open={menuId === model._id}
                         onClose={handleClose}
                       >
-                        <Link className="Link" to={`/model/update-model/${model._id}`}>
+                        {/* <Link className="Link" to={`/model/update-model/${model._id}`}>
                           <MenuItem style={{ color: 'black' }}>Edit</MenuItem>
-                        </Link>
+                        </Link> */}
+                      <Link 
+  className="Link" 
+  to={`/model/update-model/${model._id}?branch_id=${
+    selectedBranch || 
+    (model.prices && model.prices[0]?.branch_id) || 
+    ''
+  }`}
+>
+  <MenuItem style={{ color: 'black' }}>Edit</MenuItem>
+</Link>
+
                         <MenuItem onClick={() => handleDelete(model._id)}>Delete</MenuItem>
                       </Menu>
                     </td>

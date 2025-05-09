@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../../css/form.css'
 import { CInputGroup, CInputGroupText, CFormInput,CFormSwitch } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
-import { cilGarage,cilListRich, cilLocationPin } from '@coreui/icons';
+import { cilBarcode, cilBuilding, cilEnvelopeClosed, cilGarage,cilHome,cilLocationPin, cilMap, cilPhone } from '@coreui/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { showFormSubmitError, showFormSubmitToast } from 'utils/sweetAlerts';
 import axiosInstance from 'axiosInstance';
@@ -104,7 +104,7 @@ const [formData,setFormData] = useState({
               </div>
               <CInputGroup>
                 <CInputGroupText className="input-icon">
-                  <CIcon icon={cilGarage} />
+                  <CIcon icon={cilLocationPin} />
                 </CInputGroupText>
                 <CFormInput
                   type="text"
@@ -122,7 +122,7 @@ const [formData,setFormData] = useState({
               </div>
               <CInputGroup>
                 <CInputGroupText className="input-icon">
-                  <CIcon icon={cilLocationPin} />
+                  <CIcon icon={cilMap} />
                 </CInputGroupText>
                 <CFormInput
                   type="text"
@@ -140,7 +140,7 @@ const [formData,setFormData] = useState({
               </div>
               <CInputGroup>
                 <CInputGroupText className="input-icon">
-                  <CIcon icon={cilListRich} />
+                  <CIcon icon={cilLocationPin} />
                 </CInputGroupText>
                 <CFormInput
                   type="text"
@@ -158,7 +158,7 @@ const [formData,setFormData] = useState({
               </div>
               <CInputGroup>
                 <CInputGroupText className="input-icon">
-                  <CIcon icon={cilListRich} />
+                  <CIcon icon={cilBuilding} />
                 </CInputGroupText>
                 <CFormInput
                   type="text"
@@ -176,7 +176,7 @@ const [formData,setFormData] = useState({
               </div>
               <CInputGroup>
                 <CInputGroupText className="input-icon">
-                  <CIcon icon={cilListRich} />
+                  <CIcon icon={cilHome} />
                 </CInputGroupText>
                 <CFormInput
                   type="text"
@@ -194,7 +194,7 @@ const [formData,setFormData] = useState({
               </div>
               <CInputGroup>
                 <CInputGroupText className="input-icon">
-                  <CIcon icon={cilListRich} />
+                  <CIcon icon={cilPhone} />
                 </CInputGroupText>
                 <CFormInput
                   type="text"
@@ -212,7 +212,7 @@ const [formData,setFormData] = useState({
               </div>
               <CInputGroup>
                 <CInputGroupText className="input-icon">
-                  <CIcon icon={cilListRich} />
+                  <CIcon icon={cilEnvelopeClosed} />
                 </CInputGroupText>
                 <CFormInput
                   type="text"
@@ -230,7 +230,7 @@ const [formData,setFormData] = useState({
               </div>
               <CInputGroup>
                 <CInputGroupText className="input-icon">
-                  <CIcon icon={cilListRich} />
+                  <CIcon icon={cilBarcode} />
                 </CInputGroupText>
                 <CFormInput
                   type="text"

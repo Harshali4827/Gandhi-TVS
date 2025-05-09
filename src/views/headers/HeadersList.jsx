@@ -16,7 +16,6 @@ import { copyToClipboard, exportToExcel, exportToPdf} from 'utils/tableExports';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import axiosInstance from 'axiosInstance';
 import { confirmDelete, showError, showSuccess } from 'utils/sweetAlerts';
-import ImportCSV from 'views/csv/ImportCSV';
 
 const HeadersList = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -46,10 +45,6 @@ const HeadersList = () => {
     } catch (error) {
       console.log('Error fetching data', error);
     }
-  };
-  
-  const handleImportSuccess = () => {
-    fetchData();
   };
   
   const handleClick = (event, id) => {
@@ -126,11 +121,6 @@ const HeadersList = () => {
           <button className="btn2" title="Export CSV" onClick={handleCSVExportFromAPI}>
                   <FontAwesomeIcon icon={faFileCsv} />
            </button>
-          <ImportCSV
-            endpoint="/csv/import" 
-            onSuccess={handleImportSuccess}
-            buttonText="Import CSV"
-          />
         </div>
         <Link to="/headers/add-header">
           <button className="new-user-btn">+ New Header</button>
