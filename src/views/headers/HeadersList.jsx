@@ -20,6 +20,10 @@ import { confirmDelete, showError, showSuccess } from 'utils/sweetAlerts';
 const HeadersList = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuId, setMenuId] = useState(null);
+  const [csvDialogOpen, setCsvDialogOpen] = useState(false);
+  const [selectedType, setSelectedType] = useState('');
+
+
   const {
     data,
     setData,
@@ -64,25 +68,6 @@ const HeadersList = () => {
     'HeadersDetails'
   );
   
-  const handleCSVExportFromAPI = async () => {
-    try {
-      const response = await axiosInstance.get('/csv/export-template?filled=true', {
-        responseType: 'blob', 
-      });
-  
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'exported_data.csv'); 
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    } catch (error) {
-      console.error('CSV export failed:', error);
-      showError('Failed to export CSV.');
-    }
-  };
-
   const handleDelete = async (id) => {
     const result = await confirmDelete();
     if (result.isConfirmed) {
@@ -118,9 +103,13 @@ const HeadersList = () => {
           <button className="btn2" title="PDF" onClick={handlePdfExport}>
             <FontAwesomeIcon icon={faFilePdf} />
           </button>
-          <button className="btn2" title="Export CSV" onClick={handleCSVExportFromAPI}>
+          {/* <button className="btn2" title="Export CSV" onClick={handleCSVExportFromAPI}>
                   <FontAwesomeIcon icon={faFileCsv} />
-           </button>
+           </button> */}
+           <button className="btn2" title="Export CSV" onClick={() => setCsvDialogOpen(true)}>
+               <FontAwesomeIcon icon={faFileCsv} />
+          </button>
+
         </div>
         <Link to="/headers/add-header">
           <button className="new-user-btn">+ New Header</button>
@@ -184,6 +173,54 @@ const HeadersList = () => {
         </table>
       </div>
       <PaginationOptions/>
+      {csvDialogOpen && (
+  <div className="modal-backdrop">
+    <div className="modal-content">
+      <select
+        value={selectedType}
+        onChange={(e) => setSelectedType(e.target.value)}
+        style={{ padding: '8px', width: '100%', marginBottom: '10px' }}
+      >
+        <option value="">-- Select Model Type --</option>
+        <option value="EV">EV</option>
+        <option value="ICE">ICE</option>
+      </select>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <button onClick={() => setCsvDialogOpen(false)}>Cancel</button>
+        <button
+          onClick={async () => {
+            if (!selectedType) {
+              showError('Please select a type.');
+              return;
+            }
+            try {
+              const response = await axiosInstance.get(`/csv/export-template?filled=true&type=${selectedType}`, {
+                responseType: 'blob',
+              });
+
+              const url = window.URL.createObjectURL(new Blob([response.data]));
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', `exported_data_${selectedType}.csv`);
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+              setCsvDialogOpen(false);
+              setSelectedType('');
+            } catch (error) {
+              console.error('CSV export failed:', error);
+              showError('Failed to export CSV.');
+              setCsvDialogOpen(false);
+            }
+          }}
+        >
+          Export
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
      </div>
   );
 };

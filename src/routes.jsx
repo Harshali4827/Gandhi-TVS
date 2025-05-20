@@ -210,6 +210,21 @@ export const routes = [
       },
       {
         exact: 'true',
+        path: '/attachments/add-attachments',
+        element: lazy(() => import('./views/attachments/Attachments'))
+      },
+      {
+        exact: 'true',
+        path: '/attachments/update-attachments/:id',
+        element: lazy(() => import('./views/attachments/Attachments'))
+      },
+      {
+        exact: 'true',
+        path: '/attachments/attachments-list',
+        element: lazy(() => import('./views/attachments/AttachmentsList'))
+      },
+      {
+        exact: 'true',
         path: '/sample-page',
         element: lazy(() => import('./views/extra/SamplePage'))
       },

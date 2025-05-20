@@ -1,4 +1,6 @@
-// import React, { useRef, useState } from 'react';
+
+
+// import React, { useRef, useState, useEffect } from 'react';
 // import Swal from 'sweetalert2';
 // import axiosInstance from 'axiosInstance';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,14 +10,78 @@
 // const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFiles = ".csv" }) => {
 //   const fileInputRef = useRef(null);
 //   const [isLoading, setIsLoading] = useState(false);
+//   const [branches, setBranches] = useState([]);
+//   const [selectedBranchId, setSelectedBranchId] = useState('');
+
+//   useEffect(() => {
+//     const fetchBranches = async () => {
+//       try {
+//         const response = await axiosInstance.get('/branches');
+//         setBranches(response.data.data || []);
+//       } catch (error) {
+//         console.error('Error fetching branches:', error);
+//         Swal.fire({
+//           title: 'Error!',
+//           text: 'Failed to fetch branches. Please try again later.',
+//           icon: 'error',
+//           confirmButtonText: 'OK',
+//         });
+//       }
+//     };
+
+//     fetchBranches();
+//   }, []);
 
 //   const handleButtonClick = () => {
-//     fileInputRef.current.click();
+//     if (branches.length === 0) {
+//       Swal.fire({
+//         title: 'No Branches Available',
+//         text: 'Please ensure branches exist before importing data.',
+//         icon: 'warning',
+//         confirmButtonText: 'OK',
+//       });
+//       return;
+//     }
+
+//     Swal.fire({
+//       title: 'Import CSV',
+//       html: `
+//         <div>
+//           <label for="branch-select" style="display: block; margin-bottom: 8px; text-align: left;">Select Branch</label>
+//           <select 
+//             id="branch-select" 
+//             class="swal2-select"
+//             style="display: block; width:90%; margin-bottom: 1em;"
+//           >
+//             <option value="">-- Select Branch --</option>
+//             ${branches.map(branch => `
+//               <option value="${branch._id}">${branch.name}</option>
+//             `).join('')}
+//           </select>
+//         </div>
+//       `,
+//       showCancelButton: true,
+//       confirmButtonText: 'Continue',
+//       cancelButtonText: 'Cancel',
+//       preConfirm: () => {
+//         const select = Swal.getPopup().querySelector('#branch-select');
+//         if (!select.value) {
+//           Swal.showValidationMessage('Please select a branch');
+//           return false;
+//         }
+//         return select.value;
+//       }
+//     }).then((result) => {
+//       if (result.isConfirmed) {
+//         setSelectedBranchId(result.value);
+//         fileInputRef.current.click();
+//       }
+//     });
 //   };
 
 //   const handleFileChange = async (e) => {
 //     const file = e.target.files[0];
-//     if (!file) return;
+//     if (!file || !selectedBranchId) return;
 
 //     // Validate file type
 //     if (!file.name.toLowerCase().endsWith('.csv')) {
@@ -31,6 +97,7 @@
 //     setIsLoading(true);
 //     const formData = new FormData();
 //     formData.append('file', file);
+//     formData.append('branch_id', selectedBranchId);
 
 //     try {
 //       const response = await axiosInstance.post(endpoint, formData, {
@@ -62,6 +129,7 @@
 //       if (fileInputRef.current) {
 //         fileInputRef.current.value = '';
 //       }
+//       setSelectedBranchId('');
 //     }
 //   };
 
@@ -77,7 +145,7 @@
 //       <button
 //         className="import-csv-button"
 //         onClick={handleButtonClick}
-//         disabled={isLoading}
+//         disabled={isLoading || branches.length === 0}
 //       >
 //         {isLoading ? (
 //           'Uploading...'
@@ -97,6 +165,8 @@
 
 
 
+
+
 import React, { useRef, useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import axiosInstance from 'axiosInstance';
@@ -109,6 +179,7 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
   const [isLoading, setIsLoading] = useState(false);
   const [branches, setBranches] = useState([]);
   const [selectedBranchId, setSelectedBranchId] = useState('');
+  const [selectedType, setSelectedType] = useState('');
 
   useEffect(() => {
     const fetchBranches = async () => {
@@ -142,18 +213,17 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
 
     Swal.fire({
       title: 'Import CSV',
+      width: 400, 
       html: `
-        <div>
-          <label for="branch-select" style="display: block; margin-bottom: 8px; text-align: left;">Select Branch</label>
-          <select 
-            id="branch-select" 
-            class="swal2-select"
-            style="display: block; width:90%; margin-bottom: 1em;"
-          >
+        <div style="text-align:left">
+          <select id="branch-select" class="swal2-select" style="width:80%;margin-bottom:1em;">
             <option value="">-- Select Branch --</option>
-            ${branches.map(branch => `
-              <option value="${branch._id}">${branch.name}</option>
-            `).join('')}
+            ${branches.map(b => `<option value="${b._id}">${b.name}</option>`).join('')}
+          </select>
+          <select id="type-select" class="swal2-select" style="width:80%;">
+            <option value="">-- Select Type --</option>
+            <option value="EV">EV</option>
+            <option value="ICE">ICE</option>
           </select>
         </div>
       `,
@@ -161,26 +231,34 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
       confirmButtonText: 'Continue',
       cancelButtonText: 'Cancel',
       preConfirm: () => {
-        const select = Swal.getPopup().querySelector('#branch-select');
-        if (!select.value) {
+        const branchSel = Swal.getPopup().querySelector('#branch-select');
+        const typeSel   = Swal.getPopup().querySelector('#type-select');
+    
+        if (!branchSel.value) {
           Swal.showValidationMessage('Please select a branch');
           return false;
         }
-        return select.value;
+        if (!typeSel.value) {
+          Swal.showValidationMessage('Please select a type (EV / ICE)');
+          return false;
+        }
+    
+        return { branchId: branchSel.value, type: typeSel.value };
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        setSelectedBranchId(result.value);
+        setSelectedBranchId(result.value.branchId);
+        setSelectedType(result.value.type);
         fileInputRef.current.click();
       }
     });
+    
   };
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    if (!file || !selectedBranchId) return;
+    if (!file || !selectedBranchId || !selectedType) return;
 
-    // Validate file type
     if (!file.name.toLowerCase().endsWith('.csv')) {
       Swal.fire({
         title: 'Invalid File',
@@ -195,6 +273,7 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
     const formData = new FormData();
     formData.append('file', file);
     formData.append('branch_id', selectedBranchId);
+    formData.append('type', selectedType);
 
     try {
       const response = await axiosInstance.post(endpoint, formData, {
@@ -227,6 +306,7 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
         fileInputRef.current.value = '';
       }
       setSelectedBranchId('');
+      setSelectedType('');  
     }
   };
 

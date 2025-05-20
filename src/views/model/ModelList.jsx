@@ -226,9 +226,9 @@ const ModelList = () => {
             <button className="btn2" title="PDF" onClick={handlePdfExport}>
               <FontAwesomeIcon icon={faFilePdf} />
             </button>
-            <button className="btn2" title="Export CSV" onClick={handleCSVExportFromAPI}>
+            {/* <button className="btn2" title="Export CSV" onClick={handleCSVExportFromAPI}>
               <FontAwesomeIcon icon={faFileCsv} />
-            </button>
+            </button> */}
             <ImportCSV
               endpoint="/csv/import" 
               onSuccess={handleImportSuccess}
@@ -279,9 +279,6 @@ const ModelList = () => {
                         open={menuId === model._id}
                         onClose={handleClose}
                       >
-                        {/* <Link className="Link" to={`/model/update-model/${model._id}`}>
-                          <MenuItem style={{ color: 'black' }}>Edit</MenuItem>
-                        </Link> */}
                       <Link 
   className="Link" 
   to={`/model/update-model/${model._id}?branch_id=${

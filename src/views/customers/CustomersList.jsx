@@ -6,14 +6,11 @@ import {
   faCopy,
   faFileExcel,
   faFilePdf,
-  faFileCsv,
 } from '@fortawesome/free-solid-svg-icons';
-import { CSVLink } from 'react-csv';
 import '../../css/table.css';
 import Swal from 'sweetalert2';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { getDefaultSearchFields, useTableFilter } from 'utils/tableFilters';
 import { usePagination } from 'utils/pagination.jsx'; 
 import { copyToClipboard, exportToCsv, exportToExcel, exportToPdf } from 'utils/tableExports';
@@ -64,7 +61,42 @@ const CustomersList = () => {
     setMenuId(null);
   };
 
-  const handleExcelExport = () => exportToExcel(data, 'CustomerDetails');
+  // const handleExcelExport = () => exportToExcel(data, 'CustomerDetails');
+  
+
+  
+    const handleExcelExport = async () => {
+      try {
+        Swal.fire({
+          title: 'Preparing Excel Report',
+          html: 'Fetching quotations data...',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        const response = await axiosInstance.get('/quotations');
+        const quotations = response.data.data.quotations;
+        const excelData = quotations.map(quote => ({
+          'Quotation Number': quote.quotation_number,
+          'Customer Name': quote.customer?.name || 'N/A',
+          'Customer Mobile': quote.customer?.mobile1 || 'N/A',
+          'Model Name': quote.models[0]?.model_name || 'N/A',
+          'Base Price': quote.models[0]?.base_price || 0,
+          'Expected Delivery': new Date(quote.expected_delivery_date).toLocaleDateString(),
+          'Finance Needed': quote.finance_needed ? 'Yes' : 'No',
+          'Status': quote.status.charAt(0).toUpperCase() + quote.status.slice(1),
+          'Sales Person':quote.createdBy,
+          'Created Date': new Date(quote.createdAt).toLocaleDateString(),
+        }));
+        Swal.close();
+        exportToExcel(excelData, 'CustomersReport');
+        
+      } catch (error) {
+        Swal.fire('Error', 'Failed to generate Excel report', 'error');
+        console.error('Excel export error:', error);
+      }
+    };
 
  const handlePdfExport = () => exportToPdf(
     data,

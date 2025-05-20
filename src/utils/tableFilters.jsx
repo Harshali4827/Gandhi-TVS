@@ -39,7 +39,8 @@ export const useTableFilter = (initialData) => {
       documents:['name','description'],
       conditions:['title','content','order'],
       offers:['title','description','applyToAllModels','applicableModels'],
-      customers:['name','address','taluka','district','mobile1','mobile2']
+      customers:['name','address','taluka','district','mobile1','mobile2'],
+      attachments:['title','description'],
     };
   
     return fieldMap[tableType] || Object.keys(fieldMap.branch);

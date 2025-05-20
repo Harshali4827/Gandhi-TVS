@@ -182,6 +182,26 @@ const menuItems = {
           ]
         },
         {
+          id: 'attachments',
+          title: 'Attachments',
+          type: 'collapse',
+          icon: 'fas fa-file-alt',
+          children: [
+            {
+              id: 'add attachment',
+              title: 'Add Attachments',
+              type: 'item',
+              url: '/attachments/add-attachments'
+            },
+            {
+              id: 'attachments list',
+              title: 'Attachments List',
+              type: 'item',
+              url: '/attachments/attachments-list'
+            }
+          ]
+        },
+        {
           id: 'customers',
           title: 'Customers',
           type: 'collapse',

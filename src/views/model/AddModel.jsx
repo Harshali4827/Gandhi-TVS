@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../../css/form.css'
-import { CInputGroup, CInputGroupText, CFormInput} from '@coreui/react';
+import { CInputGroup, CInputGroupText, CFormInput, CFormSelect} from '@coreui/react';
 import CIcon from '@coreui/icons-react';
-import { cilBike } from '@coreui/icons';
+import { cilBike, cilCheckCircle } from '@coreui/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { showFormSubmitError, showFormSubmitToast } from 'utils/sweetAlerts';
 import FormButtons from 'utils/FormButtons';
@@ -11,6 +11,7 @@ import axiosInstance from 'axiosInstance';
 function AddModel() {
 const [formData,setFormData] = useState({
   model_name:'',
+  type:''
   })
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const [formData,setFormData] = useState({
     let formErrors = {};
 
     if (!formData.model_name) formErrors.model_name = 'This field is required';
+    if (!formData.type) formErrors.type = 'Type is required';
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       return;
@@ -90,6 +92,23 @@ const [formData,setFormData] = useState({
                 />
               </CInputGroup>
               {errors.model_name && <p className="error">{errors.model_name}</p>}
+            </div>
+            <div className="input-box">
+              <div className="details-container">
+                <span className="details">Type</span>
+                <span className="required">*</span>
+              </div>
+              <CInputGroup>
+                <CInputGroupText className="input-icon">
+                  <CIcon icon={cilCheckCircle} />
+                </CInputGroupText>
+                <CFormSelect name="type" value={formData.type} onChange={handleChange}>
+                  <option value="">-Select-</option>
+                  <option value="EV">EV</option>
+                  <option value="ICE">ICE</option>
+                </CFormSelect>
+              </CInputGroup>
+              {errors.type && <p className="error">{errors.type}</p>}
             </div>
            <FormButtons onCancel={handleCancel}/>
           </div>
