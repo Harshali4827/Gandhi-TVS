@@ -21,15 +21,34 @@ export const showSuccess = (message = 'Deleted successfully') => {
   });
 };
 
+// export const showError = (message = 'Something went wrong') => {
+//   if (process.env.NODE_ENV === 'development') {
+//     console.error('SweetAlert Error:', message);
+//   }
+//   return Swal.fire({
+//     title: 'Error!',
+//     text: message,
+//     icon: 'error',
+//     confirmButtonColor: '#006cb5',
+//   });
+// };
 export const showError = (message = 'Something went wrong') => {
   if (process.env.NODE_ENV === 'development') {
     console.error('SweetAlert Error:', message);
   }
+
   return Swal.fire({
-    title: 'Error!',
-    text: message,
+    toast: true,
+    position: 'top-end',
     icon: 'error',
-    confirmButtonColor: '#006cb5',
+    title: message,
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
   });
 };
 

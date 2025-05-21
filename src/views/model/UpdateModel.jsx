@@ -1,7 +1,7 @@
 import axiosInstance from 'axiosInstance';
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { showSuccess, showError } from 'utils/sweetAlerts';
+import { showSuccess, showError, showFormSubmitToast } from 'utils/sweetAlerts';
 import '../../css/form.css';
 import FormButtons from 'utils/FormButtons';
 import { CFormInput, CInputGroup, CInputGroupText } from '@coreui/react';
@@ -53,7 +53,7 @@ const UpdateModel = () => {
       };
       
       await axiosInstance.patch(`/models/${id}/prices`, payload);
-      showSuccess('Model updated successfully!');
+      showFormSubmitToast('Model updated successfully!');
       navigate('/model/model-list'); 
     } catch (err) {
       console.error(err);

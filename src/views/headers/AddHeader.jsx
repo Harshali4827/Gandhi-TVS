@@ -39,7 +39,7 @@ const [formData,setFormData] = useState({
         header_key: header.header_key || '',
         category_key: header.category_key || '',
         priority: header.priority || '',
-        type: header.metadata?.type || '',
+        type: header.type || '',
         page_no: header.metadata?.page_no || '',
         hsn_code: header.metadata?.hsn_code || '',
         gst_rate: header.metadata?.gst_rate || ''
@@ -74,9 +74,9 @@ const [formData,setFormData] = useState({
     const payload = {
       header_key: formData.header_key,
       category_key: formData.category_key,
+      type:formData.type,
       priority: parseInt(formData.priority),
       metadata: {
-        type: formData.type,
         page_no: parseInt(formData.page_no),
         hsn_code: formData.hsn_code,
         gst_rate: formData.gst_rate

@@ -66,15 +66,6 @@ const CustomersList = () => {
   
   const handleExcelExport = async () => {
     try {
-      Swal.fire({
-        title: 'Preparing Excel Report',
-        html: 'Fetching quotations data...',
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        }
-      });
-  
       const response = await axiosInstance.get('/quotations');
       const quotations = response.data.data.quotations;
       

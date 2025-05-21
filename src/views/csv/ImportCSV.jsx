@@ -179,6 +179,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileImport } from '@fortawesome/free-solid-svg-icons';
 import '../../css/importCsv.css';
 import { showError } from 'utils/sweetAlerts';
+import Swal from 'sweetalert2';
 
 const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFiles = ".csv" }) => {
   const fileInputRef = useRef(null);
@@ -279,12 +280,7 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
       }
     } catch (error) {
       console.error('Error uploading file:', error);
-      Swal.fire({
-        title: 'Error!',
-        text: error.response?.data?.message || 'Failed to import file. Please try again.',
-        icon: 'error',
-        confirmButtonText: 'OK',
-      });
+      showError(error);
     } finally {
       setIsLoading(false);
       if (fileInputRef.current) {

@@ -137,7 +137,7 @@ const handleChange = (e) => {
       Array.from(formData.documents).forEach((file) => data.append('documents', file));
 
       if (id) {
-        await axiosInstance.patch(`/attachment/${id}`, data, {
+        await axiosInstance.put(`/attachment/${id}`, data, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
         await showFormSubmitToast('Attachments updated successfully!');

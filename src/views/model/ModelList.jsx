@@ -289,7 +289,6 @@ import {
   confirmDelete, showError, showSuccess, axiosInstance, CopyToClipboard
 } from 'utils/tableImports';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import Swal from 'sweetalert2';
 import { exportToModelPdf } from 'utils/tableExports';
 import { useParams } from 'react-router-dom';
 
@@ -521,7 +520,7 @@ const [branchFilterError, setBranchFilterError] = useState('');
                       >
                       <Link 
   className="Link" 
-  to={`/model/update-model/${model._id}?branch_id=${
+  to={`/model/update-model/${model.id}?branch_id=${
     selectedBranch || 
     (model.prices && model.prices[0]?.branch_id) || 
     ''
@@ -530,7 +529,7 @@ const [branchFilterError, setBranchFilterError] = useState('');
   <MenuItem style={{ color: 'black' }}>Edit</MenuItem>
 </Link>
 
-                        <MenuItem onClick={() => handleDelete(model._id)}>Delete</MenuItem>
+                        <MenuItem onClick={() => handleDelete(model.id)}>Delete</MenuItem>
                       </Menu>
                     </td>
                   </tr>
