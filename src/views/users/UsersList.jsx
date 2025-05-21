@@ -104,10 +104,37 @@ const UsersList = () => {
       }
     }
   };
+  // const handleToggleActive = async (userId) => {
+  //   try {
+  //     const response = await axiosInstance.patch(`/users/${userId}/toggle-active`);
+  //     console.log(response.data.message);
+  //     handleClose();
+  //   } catch (error) {
+  //     console.error("Error toggling user status:", error);
+  //   }
+  // };
   const handleToggleActive = async (userId) => {
     try {
       const response = await axiosInstance.patch(`/users/${userId}/toggle-active`);
       console.log(response.data.message);
+      
+      // Update the local state to reflect the change
+      setData(prevData => 
+        prevData.map(user => 
+          user.id === userId 
+            ? { ...user, is_active: !user.is_active } 
+            : user
+        )
+      );
+      
+      setFilteredData(prevData => 
+        prevData.map(user => 
+          user.id === userId 
+            ? { ...user, is_active: !user.is_active } 
+            : user
+        )
+      );
+      
       handleClose();
     } catch (error) {
       console.error("Error toggling user status:", error);

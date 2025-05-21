@@ -4,7 +4,7 @@ import { CInputGroup, CInputGroupText, CFormInput, CFormSelect,} from '@coreui/r
 import CIcon from '@coreui/icons-react';
 import { cilEnvelopeClosed,cilLocationPin,cilPhone, cilUser } from '@coreui/icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import { showFormSubmitError, showFormSubmitToast } from 'utils/sweetAlerts';
+import { showError, showFormSubmitError, showFormSubmitToast } from 'utils/sweetAlerts';
 import axiosInstance from 'axiosInstance';
 import { jwtDecode } from 'jwt-decode';
 function AddUser() {
@@ -80,7 +80,7 @@ const [formData,setFormData] = useState({
         setBranches(response.data.data || []);
       } catch (error) {
         console.error('Error fetching branches:', error);
-        showFormSubmitError(error);
+        showError(error);
       }
     };
 
