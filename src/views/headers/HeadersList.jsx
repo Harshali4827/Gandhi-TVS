@@ -9,6 +9,7 @@ import {
   faFileCsv,
 } from '@fortawesome/free-solid-svg-icons';
 import '../../css/table.css';
+import '../../css/importCsv.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getDefaultSearchFields, useTableFilter } from 'utils/tableFilters';
 import { usePagination } from 'utils/pagination.jsx'; 
@@ -179,7 +180,7 @@ const HeadersList = () => {
       <select
         value={selectedType}
         onChange={(e) => setSelectedType(e.target.value)}
-        style={{ padding: '8px', width: '100%', marginBottom: '10px' }}
+        style={{ padding: '5px', width: '100%', marginBottom: '10px' }}
       >
         <option value="">-- Select Model Type --</option>
         <option value="EV">EV</option>
@@ -187,21 +188,7 @@ const HeadersList = () => {
       </select>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <button onClick={() => setCsvDialogOpen(false)} 
-          style={{
-            padding: '8px 8px',
-            backgroundColor: '#dc4226',
-            color: '#fff',
-            border: '1px solid #ccc',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: '500',
-            transition: 'all 0.3s ease',
-            minWidth: '100px',
-            ':hover': {
-              backgroundColor: '#dc4226',
-            }
-          }}
+          className='custom-modal-button custom-modal-button-cancel '
           >Cancel</button>
         <button
           onClick={async () => {
@@ -229,21 +216,7 @@ const HeadersList = () => {
               setCsvDialogOpen(false);
             }
           }}
-          style={{
-            padding: '8px 16px',
-            backgroundColor: '#243c7c',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: '500',
-            transition: 'all 0.3s ease',
-            minWidth: '100px',
-            ':hover': {
-              backgroundColor: '#243c7c',
-            }
-          }}
+          className='custom-modal-button custom-modal-button-confirm '
         >
           Export
         </button>

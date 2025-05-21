@@ -15,8 +15,8 @@ const VerifyOTP = () => {
     setErrorMessage('');
 
     try {
-      const email = localStorage.getItem('email');
-      const response = await axiosInstance.post('/users/verify-otp', { email, otp });
+      const mobile = localStorage.getItem('mobile');
+      const response = await axiosInstance.post('/users/verify-otp', { mobile, otp });
 
       if (response.data.success) {
         localStorage.setItem('token', response.data.token);
@@ -60,7 +60,7 @@ const VerifyOTP = () => {
             <Form.Label>Enter OTP</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter the OTP sent to your email"
+              placeholder="Enter the OTP sent to your mobile"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
               required

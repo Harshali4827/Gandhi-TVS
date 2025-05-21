@@ -58,22 +58,22 @@
 }
 
 .custom-modal-header {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .custom-modal-title {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
   margin: 0;
 }
 
-.custom-modal-body {
+/* .custom-modal-body {
   margin-bottom: 20px;
-}
+} */
 
 .custom-modal-select {
   width: 100%;
-  padding: 8px;
+  padding: 5px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -87,7 +87,7 @@
 }
 
 .custom-modal-button {
-  padding: 8px 16px;
+  padding: 3px 7px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;

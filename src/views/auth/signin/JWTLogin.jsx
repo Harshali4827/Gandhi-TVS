@@ -14,20 +14,26 @@ const JWTLogin = () => {
     <>
       <Formik
   initialValues={{
-    email: '',
+    mobile: '',
     submit: null
   }}
+  
+  // validationSchema={Yup.object().shape({
+  //   mobile: Yup.string().mobile('Invalid mobile number').required('mobile number is required'),
+  // })}
   validationSchema={Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Email is required'),
+    mobile: Yup.string()
+      .matches(/^[0-9]{10}$/, 'Invalid mobile number (must be 10 digits)')
+      .required('Mobile number is required'),
   })}
   onSubmit={async (values, { setSubmitting, setErrors }) => {
     try {
       const response = await axiosInstance.post('/users/login', {
-        email: values.email,
+        mobile: values.mobile,
       });
 
       if (response.data.success) {
-        localStorage.setItem('email', values.email); 
+        localStorage.setItem('mobile', values.mobile); 
         navigate('/verify-otp'); 
       } else {
         setErrorMessage('Failed to send OTP. Please try again.');
@@ -45,14 +51,14 @@ const JWTLogin = () => {
       <div className="form-group mb-3">
         <input
           className="form-control"
-          name="email"
+          name="mobile"
           onBlur={handleBlur}
           onChange={handleChange}
-          type="email"
-          value={values.email}
-          placeholder="Enter your email"
+          type="text"
+          value={values.mobile}
+          placeholder="Enter your mobile number"
         />
-        {touched.email && errors.email && <small className="text-danger form-text">{errors.email}</small>}
+        {touched.mobile && errors.mobile && <small className="text-danger form-text">{errors.mobile}</small>}
       </div>
 
       {errorMessage && (

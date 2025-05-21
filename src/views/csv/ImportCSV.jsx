@@ -178,6 +178,7 @@ import axiosInstance from 'axiosInstance';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileImport } from '@fortawesome/free-solid-svg-icons';
 import '../../css/importCsv.css';
+import { showError } from 'utils/sweetAlerts';
 
 const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFiles = ".csv" }) => {
   const fileInputRef = useRef(null);
@@ -204,7 +205,7 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
 
   const handleButtonClick = () => {
     if (branches.length === 0) {
-      alert('No branches available. Please ensure branches exist before importing data.');
+     showError('Please ensure branches exist before importing data.')
       return;
     }
     setShowModal(true);
@@ -246,7 +247,12 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
     if (!file || !selectedBranchId || !selectedType) return;
 
     if (!file.name.toLowerCase().endsWith('.csv')) {
-      alert('Please upload a CSV file.');
+      Swal.fire({
+        title: 'Invalid File',
+        text: 'Please upload a CSV file.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
       return;
     }
 
@@ -262,14 +268,23 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
           'Content-Type': 'multipart/form-data',
         },
       });
-      alert(response.data.message || 'File imported successfully!');
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: response.data.message || 'File imported successfully!',
+      });
 
       if (onSuccess) {
         onSuccess();
       }
     } catch (error) {
       console.error('Error uploading file:', error);
-      alert(error.response?.data?.message || 'Failed to import file. Please try again.');
+      Swal.fire({
+        title: 'Error!',
+        text: error.response?.data?.message || 'Failed to import file. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
     } finally {
       setIsLoading(false);
       if (fileInputRef.current) {

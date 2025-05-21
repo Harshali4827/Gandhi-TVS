@@ -45,7 +45,7 @@ const Signin1 = () => {
           <Card className="borderless text-center">
             <Card.Body>
               <h4>Sign In</h4>
-            <p className="text-body-secondary text-left">Enter your email to get an otp</p>
+            <p className="text-body-secondary text-left">Enter your mobile number to get an otp</p>
               <AuthLogin />
             </Card.Body>
           </Card>
