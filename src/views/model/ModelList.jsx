@@ -119,10 +119,6 @@ const ModelList = () => {
     });
   };
   
-  const clearBranchFilter = () => {
-    setSelectedBranch(null);
-    fetchData();
-  };
   const getPriceForHeader = (model, headerId) => {
     if (!model.prices) return '-';
     if (isFiltered) {
@@ -154,9 +150,6 @@ const ModelList = () => {
       headers,
       isFiltered
     );
-  
-  
-  const csvExport = exportToCsv(data, 'ModelDetails');
 
   const handleDelete = async (id) => {
     const result = await confirmDelete();
@@ -172,25 +165,6 @@ const ModelList = () => {
       }
     }
   };
-  const handleCSVExportFromAPI = async () => {
-    try {
-      const response = await axiosInstance.get('/csv/export-template?filled=true', {
-        responseType: 'blob', 
-      });
-  
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'exported_data.csv'); 
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    } catch (error) {
-      console.error('CSV export failed:', error);
-      showError('Failed to export CSV.');
-    }
-  };
-
   return (
     <div>
       <h4>

@@ -186,7 +186,23 @@ const HeadersList = () => {
         <option value="ICE">ICE</option>
       </select>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <button onClick={() => setCsvDialogOpen(false)}>Cancel</button>
+        <button onClick={() => setCsvDialogOpen(false)} 
+          style={{
+            padding: '8px 8px',
+            backgroundColor: '#dc4226',
+            color: '#fff',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: '500',
+            transition: 'all 0.3s ease',
+            minWidth: '100px',
+            ':hover': {
+              backgroundColor: '#dc4226',
+            }
+          }}
+          >Cancel</button>
         <button
           onClick={async () => {
             if (!selectedType) {
@@ -211,6 +227,21 @@ const HeadersList = () => {
               console.error('CSV export failed:', error);
               showError('Failed to export CSV.');
               setCsvDialogOpen(false);
+            }
+          }}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#243c7c',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: '500',
+            transition: 'all 0.3s ease',
+            minWidth: '100px',
+            ':hover': {
+              backgroundColor: '#243c7c',
             }
           }}
         >

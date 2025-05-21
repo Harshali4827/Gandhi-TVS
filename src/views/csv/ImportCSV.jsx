@@ -1,5 +1,3 @@
-
-
 // import React, { useRef, useState, useEffect } from 'react';
 // import Swal from 'sweetalert2';
 // import axiosInstance from 'axiosInstance';
@@ -12,6 +10,7 @@
 //   const [isLoading, setIsLoading] = useState(false);
 //   const [branches, setBranches] = useState([]);
 //   const [selectedBranchId, setSelectedBranchId] = useState('');
+//   const [selectedType, setSelectedType] = useState('');
 
 //   useEffect(() => {
 //     const fetchBranches = async () => {
@@ -45,18 +44,17 @@
 
 //     Swal.fire({
 //       title: 'Import CSV',
+//       width: 400, 
 //       html: `
-//         <div>
-//           <label for="branch-select" style="display: block; margin-bottom: 8px; text-align: left;">Select Branch</label>
-//           <select 
-//             id="branch-select" 
-//             class="swal2-select"
-//             style="display: block; width:90%; margin-bottom: 1em;"
-//           >
+//         <div style="text-align:left">
+//           <select id="branch-select" class="swal2-select" style="width:80%;margin-bottom:1em;">
 //             <option value="">-- Select Branch --</option>
-//             ${branches.map(branch => `
-//               <option value="${branch._id}">${branch.name}</option>
-//             `).join('')}
+//             ${branches.map(b => `<option value="${b._id}">${b.name}</option>`).join('')}
+//           </select>
+//           <select id="type-select" class="swal2-select" style="width:80%;">
+//             <option value="">-- Select Type --</option>
+//             <option value="EV">EV</option>
+//             <option value="ICE">ICE</option>
 //           </select>
 //         </div>
 //       `,
@@ -64,26 +62,34 @@
 //       confirmButtonText: 'Continue',
 //       cancelButtonText: 'Cancel',
 //       preConfirm: () => {
-//         const select = Swal.getPopup().querySelector('#branch-select');
-//         if (!select.value) {
+//         const branchSel = Swal.getPopup().querySelector('#branch-select');
+//         const typeSel   = Swal.getPopup().querySelector('#type-select');
+    
+//         if (!branchSel.value) {
 //           Swal.showValidationMessage('Please select a branch');
 //           return false;
 //         }
-//         return select.value;
+//         if (!typeSel.value) {
+//           Swal.showValidationMessage('Please select a type (EV / ICE)');
+//           return false;
+//         }
+    
+//         return { branchId: branchSel.value, type: typeSel.value };
 //       }
 //     }).then((result) => {
 //       if (result.isConfirmed) {
-//         setSelectedBranchId(result.value);
+//         setSelectedBranchId(result.value.branchId);
+//         setSelectedType(result.value.type);
 //         fileInputRef.current.click();
 //       }
 //     });
+    
 //   };
 
 //   const handleFileChange = async (e) => {
 //     const file = e.target.files[0];
-//     if (!file || !selectedBranchId) return;
+//     if (!file || !selectedBranchId || !selectedType) return;
 
-//     // Validate file type
 //     if (!file.name.toLowerCase().endsWith('.csv')) {
 //       Swal.fire({
 //         title: 'Invalid File',
@@ -98,6 +104,7 @@
 //     const formData = new FormData();
 //     formData.append('file', file);
 //     formData.append('branch_id', selectedBranchId);
+//     formData.append('type', selectedType);
 
 //     try {
 //       const response = await axiosInstance.post(endpoint, formData, {
@@ -130,6 +137,7 @@
 //         fileInputRef.current.value = '';
 //       }
 //       setSelectedBranchId('');
+//       setSelectedType('');  
 //     }
 //   };
 
@@ -165,10 +173,7 @@
 
 
 
-
-
 import React, { useRef, useState, useEffect } from 'react';
-import Swal from 'sweetalert2';
 import axiosInstance from 'axiosInstance';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileImport } from '@fortawesome/free-solid-svg-icons';
@@ -180,6 +185,9 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
   const [branches, setBranches] = useState([]);
   const [selectedBranchId, setSelectedBranchId] = useState('');
   const [selectedType, setSelectedType] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [branchError, setBranchError] = useState('');
+  const [typeError, setTypeError] = useState('');
 
   useEffect(() => {
     const fetchBranches = async () => {
@@ -188,12 +196,6 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
         setBranches(response.data.data || []);
       } catch (error) {
         console.error('Error fetching branches:', error);
-        Swal.fire({
-          title: 'Error!',
-          text: 'Failed to fetch branches. Please try again later.',
-          icon: 'error',
-          confirmButtonText: 'OK',
-        });
       }
     };
 
@@ -202,57 +204,41 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
 
   const handleButtonClick = () => {
     if (branches.length === 0) {
-      Swal.fire({
-        title: 'No Branches Available',
-        text: 'Please ensure branches exist before importing data.',
-        icon: 'warning',
-        confirmButtonText: 'OK',
-      });
+      alert('No branches available. Please ensure branches exist before importing data.');
       return;
     }
+    setShowModal(true);
+  };
 
-    Swal.fire({
-      title: 'Import CSV',
-      width: 400, 
-      html: `
-        <div style="text-align:left">
-          <select id="branch-select" class="swal2-select" style="width:80%;margin-bottom:1em;">
-            <option value="">-- Select Branch --</option>
-            ${branches.map(b => `<option value="${b._id}">${b.name}</option>`).join('')}
-          </select>
-          <select id="type-select" class="swal2-select" style="width:80%;">
-            <option value="">-- Select Type --</option>
-            <option value="EV">EV</option>
-            <option value="ICE">ICE</option>
-          </select>
-        </div>
-      `,
-      showCancelButton: true,
-      confirmButtonText: 'Continue',
-      cancelButtonText: 'Cancel',
-      preConfirm: () => {
-        const branchSel = Swal.getPopup().querySelector('#branch-select');
-        const typeSel   = Swal.getPopup().querySelector('#type-select');
+  const handleModalConfirm = () => {
+    let isValid = true;
     
-        if (!branchSel.value) {
-          Swal.showValidationMessage('Please select a branch');
-          return false;
-        }
-        if (!typeSel.value) {
-          Swal.showValidationMessage('Please select a type (EV / ICE)');
-          return false;
-        }
+    if (!selectedBranchId) {
+      setBranchError('Please select a branch');
+      isValid = false;
+    } else {
+      setBranchError('');
+    }
     
-        return { branchId: branchSel.value, type: typeSel.value };
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setSelectedBranchId(result.value.branchId);
-        setSelectedType(result.value.type);
-        fileInputRef.current.click();
-      }
-    });
+    if (!selectedType) {
+      setTypeError('Please select a type (EV / ICE)');
+      isValid = false;
+    } else {
+      setTypeError('');
+    }
     
+    if (isValid) {
+      setShowModal(false);
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleModalCancel = () => {
+    setShowModal(false);
+    setSelectedBranchId('');
+    setSelectedType('');
+    setBranchError('');
+    setTypeError('');
   };
 
   const handleFileChange = async (e) => {
@@ -260,12 +246,7 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
     if (!file || !selectedBranchId || !selectedType) return;
 
     if (!file.name.toLowerCase().endsWith('.csv')) {
-      Swal.fire({
-        title: 'Invalid File',
-        text: 'Please upload a CSV file.',
-        icon: 'error',
-        confirmButtonText: 'OK',
-      });
+      alert('Please upload a CSV file.');
       return;
     }
 
@@ -281,27 +262,16 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Success!',
-        text: response.data.message || 'File imported successfully!',
-      });
+      alert(response.data.message || 'File imported successfully!');
 
       if (onSuccess) {
         onSuccess();
       }
     } catch (error) {
       console.error('Error uploading file:', error);
-      Swal.fire({
-        title: 'Error!',
-        text: error.response?.data?.message || 'Failed to import file. Please try again.',
-        icon: 'error',
-        confirmButtonText: 'OK',
-      });
+      alert(error.response?.data?.message || 'Failed to import file. Please try again.');
     } finally {
       setIsLoading(false);
-      // Reset file input
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
@@ -333,6 +303,54 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
           </>
         )}
       </button>
+
+      {showModal && (
+        <div className="custom-modal">
+          <div className="custom-modal-content">
+            <div className="custom-modal-header">
+              <h3 className="custom-modal-title">Import CSV</h3>
+            </div>
+            <div className="custom-modal-body">
+              <select
+                className="custom-modal-select"
+                value={selectedBranchId}
+                onChange={(e) => setSelectedBranchId(e.target.value)}
+              >
+                <option value="">-- Select Branch --</option>
+                {branches.map(b => (
+                  <option key={b._id} value={b._id}>{b.name}</option>
+                ))}
+              </select>
+              {branchError && <div className="custom-modal-error">{branchError}</div>}
+              
+              <select
+                className="custom-modal-select"
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+              >
+                <option value="">-- Select Type --</option>
+                <option value="EV">EV</option>
+                <option value="ICE">ICE</option>
+              </select>
+              {typeError && <div className="custom-modal-error">{typeError}</div>}
+            </div>
+            <div className="custom-modal-footer">
+              <button
+                className="custom-modal-button custom-modal-button-cancel"
+                onClick={handleModalCancel}
+              >
+                Cancel
+              </button>
+              <button
+                className="custom-modal-button custom-modal-button-confirm"
+                onClick={handleModalConfirm}
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

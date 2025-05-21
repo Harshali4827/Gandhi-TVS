@@ -146,12 +146,13 @@ const OffersList = () => {
 
                   <td>{offer.applyToAllModels ? 'Yes' : 'No'}</td>
                   <td>
-                       {offer.applyToAllModels
-                      ? 'All'
-                     : Array.isArray(offer.applicableModels) && offer.applicableModels.length > 0
-                   ? offer.applicableModels.join(', ')
-                    : '—'}
-                 </td>
+  {offer.applyToAllModels
+    ? 'All'
+    : Array.isArray(offer.applicableModels) && offer.applicableModels.length > 0
+    ? offer.applicableModels.map(model => model.model_name).join(', ')
+    : '—'}
+</td>
+
 
                   <td>
                     <span className={`status-text ${offer.isActive}`}>

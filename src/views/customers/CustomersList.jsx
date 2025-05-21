@@ -18,7 +18,6 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import axiosInstance from 'axiosInstance';
 import { confirmDelete, showError, showSuccess } from 'utils/sweetAlerts';
 
-
 const CustomersList = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuId, setMenuId] = useState(null);
@@ -65,38 +64,68 @@ const CustomersList = () => {
   
 
   
-    const handleExcelExport = async () => {
-      try {
-        Swal.fire({
-          title: 'Preparing Excel Report',
-          html: 'Fetching quotations data...',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
-        });
-        const response = await axiosInstance.get('/quotations');
-        const quotations = response.data.data.quotations;
-        const excelData = quotations.map(quote => ({
-          'Quotation Number': quote.quotation_number,
+  const handleExcelExport = async () => {
+    try {
+      Swal.fire({
+        title: 'Preparing Excel Report',
+        html: 'Fetching quotations data...',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+  
+      const response = await axiosInstance.get('/quotations');
+      const quotations = response.data.data.quotations;
+      
+      const excelData = quotations.map(quote => {
+        // Process models data
+        const modelsData = quote.models.map(model => ({
+          modelName: model.model_name,
+          prices: model.prices.map(price => ({
+            headerKey: price.header_key,
+            value: price.value,
+            priceType: price.category_key,
+            metadata: price.metadata
+          }))
+        }));
+  
+        // Process base model data
+        const baseModelPrices = quote.base_model?.prices?.map(price => ({
+          headerKey: price.header_key,
+          value: price.value,
+          priceType: price.category_key,
+          metadata: price.metadata
+        })) || [];
+  
+        return {
           'Customer Name': quote.customer?.name || 'N/A',
-          'Customer Mobile': quote.customer?.mobile1 || 'N/A',
-          'Model Name': quote.models[0]?.model_name || 'N/A',
-          'Base Price': quote.models[0]?.base_price || 0,
+          'Mobile Number': quote.customer?.mobile1 || 'N/A',
+          'Address': quote.customer?.address || 'N/A',
+          'Taluka': quote.customer?.taluka || 'N/A',
+          'District': quote.customer?.district || 'N/A',
+          'Quotation Number': quote.quotation_number,
+          'Status': quote.status.charAt(0).toUpperCase() + quote.status.slice(1),
+          'Created Date': new Date(quote.createdAt).toLocaleDateString(),
           'Expected Delivery': new Date(quote.expected_delivery_date).toLocaleDateString(),
           'Finance Needed': quote.finance_needed ? 'Yes' : 'No',
-          'Status': quote.status.charAt(0).toUpperCase() + quote.status.slice(1),
-          'Sales Person':quote.createdBy,
-          'Created Date': new Date(quote.createdAt).toLocaleDateString(),
-        }));
-        Swal.close();
-        exportToExcel(excelData, 'CustomersReport');
-        
-      } catch (error) {
-        Swal.fire('Error', 'Failed to generate Excel report', 'error');
-        console.error('Excel export error:', error);
-      }
-    };
+          'Primary Model Name': modelsData[0]?.modelName || 'N/A',
+          // 'Primary Model Prices': JSON.stringify(modelsData[0]?.prices || []),
+          'Base Model Name': quote.base_model?.model_name || 'N/A',
+          // 'Base Model Prices': JSON.stringify(baseModelPrices),
+          'Salesman Name': quote.creator?.name || 'N/A',
+          'Salesman Mobile': quote.creator?.mobile || 'N/A',
+        };
+      });
+  
+      Swal.close();
+      exportToExcel(excelData, 'CustomersReport');
+      
+    } catch (error) {
+      Swal.fire('Error', 'Failed to generate Excel report', 'error');
+      console.error('Excel export error:', error);
+    }
+  };
 
  const handlePdfExport = () => exportToPdf(
     data,

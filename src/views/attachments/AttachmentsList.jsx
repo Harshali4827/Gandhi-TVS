@@ -233,18 +233,13 @@ const AttachmentsList = () => {
                         <FaTimesCircle className="status-icon inactive-icon" />
                       )}
                     </td>
-                      {/* {attachment.isForAllModels
-                        ? 'All'
-                        : Array.isArray(attachment.applicableModels) && attachment.applicableModels.length > 0
-                        ? attachment.applicableModels.length + ' models'
-                        : '—'} */}
                     <td>
-                       {attachment.isForAllModels
-                      ? 'All'
-                     : Array.isArray(attachment.applicableModels) && attachment.applicableModels.length > 0
-                   ? attachment.applicableModels.join(', ')
-                    : '—'}
-                    </td>
+  {attachment.isForAllModels
+    ? 'All'
+    : Array.isArray(attachment.applicableModels) && attachment.applicableModels.length > 0
+    ? attachment.applicableModels.map(model => model.model_name).join(', ')
+    : '—'}
+</td>
                     <td>{new Date(attachment.createdAt).toLocaleDateString()}</td>
                     <td>
                       <button
