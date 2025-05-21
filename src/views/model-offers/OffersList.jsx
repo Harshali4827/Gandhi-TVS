@@ -62,7 +62,7 @@ const OffersList = () => {
     if (result.isConfirmed) {
       try {
         await axiosInstance.delete(`/offers/${id}`);
-        setData(data.filter((offer) => offer.id !== id));
+        setData(data.filter((offer) => offer._id !== id));
         fetchData();
         showSuccess();
       } catch (error) {
@@ -170,14 +170,14 @@ const OffersList = () => {
                   <td>
                     <button
                       className="action-button"
-                      onClick={(event) => handleClick(event, offer.id)}
+                      onClick={(event) => handleClick(event, offer._id)}
                     >
                       Action
                     </button>
                     <Menu
-                      id={`action-menu-${offer.id}`}
+                      id={`action-menu-${offer._id}`}
                       anchorEl={anchorEl}
-                      open={menuId === offer.id}
+                      open={menuId === offer._id}
                       onClose={handleClose}
                     >
                       <Link className="Link" to={`/offers/update-offer/${offer._id}`}>

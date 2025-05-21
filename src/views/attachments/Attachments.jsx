@@ -160,7 +160,7 @@ const handleChange = (e) => {
 
   return (
     <div>
-      <h4>Add New Offers</h4>
+      <h4>Add New Attachments</h4>
       <div className="form-container">
         <div className="page-header">
           <form onSubmit={handleSubmit}>

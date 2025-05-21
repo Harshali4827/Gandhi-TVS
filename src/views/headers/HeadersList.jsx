@@ -142,7 +142,7 @@ const HeadersList = () => {
                   <td>{index + 1}</td>
                   <td>{header.header_key}</td>
                   <td>{header.category_key}</td>
-                  <td>{header.metadata?.type || ''}</td>
+                  <td>{header.type}</td>
                   <td>{header.priority}</td>
                   <td>{header.metadata?.page_no || ''}</td>
                   <td>{header.metadata?.hsn_code || ''}</td>
