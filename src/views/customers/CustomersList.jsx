@@ -70,7 +70,7 @@ const handleExcelExport = async () => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `quotations_${new Date().toISOString().split('T')[0]}.xlsx`);
+      link.setAttribute('download', `customers_${new Date().toISOString().split('T')[0]}.xlsx`);
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
