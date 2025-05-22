@@ -65,7 +65,6 @@ const handleExcelExport = async () => {
       const response = await axiosInstance.get('/quotations/export/excel', {
         responseType: 'blob', 
       });
-      await loadingToast.close();
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
