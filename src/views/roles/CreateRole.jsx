@@ -484,7 +484,7 @@ function CreateRole() {
               </CTableBody>
             </CTable>
 
-            {errors.permissions && <p className="error">{errors.permissions}</p>}
+            {errors.permissions && <p className="error" style={{color:'red'}}>{errors.permissions}</p>}
           </div>
 
           {/* ------------ Buttons ------------- */}

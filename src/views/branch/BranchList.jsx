@@ -82,7 +82,7 @@ const BranchList = () => {
           <SearchOutlinedIcon />
         </div>
         <div className="buttons">
-        <CopyToClipboard text={copyToClipboard(data)}>
+        {/* <CopyToClipboard text={copyToClipboard(data)}>
             <button className="btn2" title="Copy">
               <FontAwesomeIcon icon={faCopy} />
             </button>
@@ -98,7 +98,7 @@ const BranchList = () => {
           <CSVLink {...csvExport}        className="csv-link">
               <FontAwesomeIcon icon={faFileCsv} />
             </CSVLink>
-          </button>
+          </button> */}
         </div>
         <Link to="/branch/add-branch">
           <button className="new-user-btn">+ New Branch</button>

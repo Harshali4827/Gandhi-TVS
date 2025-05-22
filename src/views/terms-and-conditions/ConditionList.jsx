@@ -82,7 +82,7 @@ const ConditionList = () => {
           <SearchOutlinedIcon />
         </div>
         <div className="buttons">
-        <CopyToClipboard text={copyToClipboard(data)}>
+        {/* <CopyToClipboard text={copyToClipboard(data)}>
             <button className="btn2" title="Copy">
               <FontAwesomeIcon icon={faCopy} />
             </button>
@@ -93,7 +93,7 @@ const ConditionList = () => {
           <button className="btn2" title="PDF" onClick={handlePdfExport}>
             <FontAwesomeIcon icon={faFilePdf} />
           </button>
-         
+          */}
           {/* <button className="btn2">
           <CSVLink {...csvExport} className="csv-link">
               <FontAwesomeIcon icon={faFileCsv} />

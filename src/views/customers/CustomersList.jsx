@@ -126,17 +126,17 @@ const handleExcelExport = async () => {
           <SearchOutlinedIcon />
         </div>
         <div className="buttons">
-        <CopyToClipboard text={copyToClipboard(data)}>
+        {/* <CopyToClipboard text={copyToClipboard(data)}>
             <button className="btn2" title="Copy">
               <FontAwesomeIcon icon={faCopy} />
             </button>
-          </CopyToClipboard>
+          </CopyToClipboard> */}
           <button className="btn2" title="Excel" onClick={handleExcelExport}>
             <FontAwesomeIcon icon={faFileExcel} />
           </button>
-          <button className="btn2" title="PDF" onClick={handlePdfExport}>
+          {/* <button className="btn2" title="PDF" onClick={handlePdfExport}>
             <FontAwesomeIcon icon={faFilePdf} />
-          </button>
+          </button> */}
          
           {/* <button className="btn2">
           <CSVLink {...csvExport}        className="csv-link">
