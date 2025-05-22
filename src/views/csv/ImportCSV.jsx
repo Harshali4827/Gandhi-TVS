@@ -178,7 +178,7 @@ import axiosInstance from 'axiosInstance';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileImport } from '@fortawesome/free-solid-svg-icons';
 import '../../css/importCsv.css';
-import { showError } from 'utils/sweetAlerts';
+import { showError, showFormSubmitError, showFormSubmitToast } from 'utils/sweetAlerts';
 import Swal from 'sweetalert2';
 
 const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFiles = ".csv" }) => {
@@ -248,12 +248,7 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
     if (!file || !selectedBranchId || !selectedType) return;
 
     if (!file.name.toLowerCase().endsWith('.csv')) {
-      Swal.fire({
-        title: 'Invalid File',
-        text: 'Please upload a CSV file.',
-        icon: 'error',
-        confirmButtonText: 'OK',
-      });
+      showFormSubmitError({ response: { status: 400, data: { message: 'Please upload a CSV file.' } } });
       return;
     }
 
@@ -269,18 +264,14 @@ const ImportCSV = ({ endpoint, onSuccess, buttonText = "Import CSV", acceptedFil
           'Content-Type': 'multipart/form-data',
         },
       });
-      Swal.fire({
-        icon: 'success',
-        title: 'Success!',
-        text: response.data.message || 'File imported successfully!',
-      });
+      await showFormSubmitToast(response.data.message || 'File imported successfully!');
 
       if (onSuccess) {
         onSuccess();
       }
     } catch (error) {
       console.error('Error uploading file:', error);
-      showError(error);
+      showFormSubmitError(error);
     } finally {
       setIsLoading(false);
       if (fileInputRef.current) {

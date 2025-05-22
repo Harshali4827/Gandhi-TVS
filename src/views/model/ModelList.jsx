@@ -406,15 +406,15 @@ const [branchFilterError, setBranchFilterError] = useState('');
     setMenuId(null);
   };
 
-  const handleExcelExport = () => exportToExcel(data, 'ModelDetails');
-  const handlePdfExport = () =>
-    exportToModelPdf(
-      data,
-      ['model_name', ...headers.map(h => h.header_key)],
-      'ModelDetails',
-      headers,
-      isFiltered
-    );
+  // const handleExcelExport = () => exportToExcel(data, 'ModelDetails');
+  // const handlePdfExport = () =>
+  //   exportToModelPdf(
+  //     data,
+  //     ['model_name', ...headers.map(h => h.header_key)],
+  //     'ModelDetails',
+  //     headers,
+  //     isFiltered
+  //   );
 
   const handleDelete = async (id) => {
     const result = await confirmDelete();
@@ -454,17 +454,17 @@ const [branchFilterError, setBranchFilterError] = useState('');
             >
               <FontAwesomeIcon icon={faFilter} />
             </button>
-            <CopyToClipboard text={copyToClipboard(data)}>
+            {/* <CopyToClipboard text={copyToClipboard(data)}>
               <button className="btn2" title="Copy">
                 <FontAwesomeIcon icon={faCopy} />
               </button>
-            </CopyToClipboard>
-            <button className="btn2" title="Excel" onClick={handleExcelExport}>
+            </CopyToClipboard> */}
+            {/* <button className="btn2" title="Excel" onClick={handleExcelExport}>
               <FontAwesomeIcon icon={faFileExcel} />
             </button>
             <button className="btn2" title="PDF" onClick={handlePdfExport}>
               <FontAwesomeIcon icon={faFilePdf} />
-            </button>
+            </button> */}
             {/* <button className="btn2" title="Export CSV" onClick={handleCSVExportFromAPI}>
               <FontAwesomeIcon icon={faFileCsv} />
             </button> */}
@@ -497,25 +497,25 @@ const [branchFilterError, setBranchFilterError] = useState('');
                 </tr>
               ) : (
                 currentRecords.map((model, index) => (
-                  <tr key={model._id}>
+                  <tr key={model.id}>
                     <td>{index + 1}</td>
                     <td>{model.model_name}</td>
                     {headers.map(header => (
-                      <td key={`${model._id}-${header._id}`}>
+                      <td key={`${model.id}-${header.id}`}>
                         {getPriceForHeader(model, header._id)}
                       </td>
                     ))}
                     <td>
                       <button
                         className="action-button"
-                        onClick={(event) => handleClick(event, model._id)}
+                        onClick={(event) => handleClick(event, model.id)}
                       >
                         Action
                       </button>
                       <Menu
-                        id={`action-menu-${model._id}`}
+                        id={`action-menu-${model.id}`}
                         anchorEl={anchorEl}
-                        open={menuId === model._id}
+                        open={menuId === model.id}
                         onClose={handleClose}
                       >
                       <Link 
@@ -587,3 +587,4 @@ const [branchFilterError, setBranchFilterError] = useState('');
 };
 
 export default ModelList;
+

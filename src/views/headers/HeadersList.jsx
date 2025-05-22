@@ -93,7 +93,7 @@ const HeadersList = () => {
           <SearchOutlinedIcon />
         </div>
         <div className="buttons">
-        <CopyToClipboard text={copyToClipboard(data)}>
+        {/* <CopyToClipboard text={copyToClipboard(data)}>
             <button className="btn2" title="Copy">
               <FontAwesomeIcon icon={faCopy} />
             </button>
@@ -103,7 +103,7 @@ const HeadersList = () => {
           </button>
           <button className="btn2" title="PDF" onClick={handlePdfExport}>
             <FontAwesomeIcon icon={faFilePdf} />
-          </button>
+          </button> */}
           {/* <button className="btn2" title="Export CSV" onClick={handleCSVExportFromAPI}>
                   <FontAwesomeIcon icon={faFileCsv} />
            </button> */}

@@ -203,7 +203,7 @@ const handleChange = (e) => {
                 </CInputGroup>
               </div>
               <div className="input-box">
-                <span className="details">Url</span>
+                <span className="details">YouTube Url</span>
                 <CInputGroup>
                   <CInputGroupText className="input-icon">
                     <CIcon icon={cilLink} />

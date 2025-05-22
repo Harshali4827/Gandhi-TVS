@@ -32,9 +32,22 @@ export const showSuccess = (message = 'Deleted successfully') => {
 //     confirmButtonColor: '#006cb5',
 //   });
 // };
-export const showError = (message = 'Something went wrong') => {
+
+export const showError = (error, defaultMessage = 'Something went wrong') => {
+  let message = defaultMessage;
+  
+  if (typeof error === 'string') {
+    message = error;
+  } else if (error?.response?.data?.message) {
+    message = error.response.data.message;
+  } else if (error?.message) {
+    message = error.message;
+  } else if (error?.status === 'error' && error?.message) {
+    message = error.message;
+  }
+
   if (process.env.NODE_ENV === 'development') {
-    console.error('SweetAlert Error:', message);
+    console.error('SweetAlert Error:', error);
   }
 
   return Swal.fire({

@@ -60,61 +60,35 @@ const CustomersList = () => {
     setMenuId(null);
   };
 
-  // const handleExcelExport = () => exportToExcel(data, 'CustomerDetails');
-  
-
-  
-  const handleExcelExport = async () => {
+const handleExcelExport = async () => {
     try {
-      const response = await axiosInstance.get('/quotations');
-      const quotations = response.data.data.quotations;
-      
-      const excelData = quotations.map(quote => {
-        // Process models data
-        const modelsData = quote.models.map(model => ({
-          modelName: model.model_name,
-          prices: model.prices.map(price => ({
-            headerKey: price.header_key,
-            value: price.value,
-            priceType: price.category_key,
-            metadata: price.metadata
-          }))
-        }));
+      const response = await axiosInstance.get('/quotations/export/excel', {
+        responseType: 'blob', 
+      });
+      await loadingToast.close();
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `quotations_${new Date().toISOString().split('T')[0]}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
   
-        // Process base model data
-        const baseModelPrices = quote.base_model?.prices?.map(price => ({
-          headerKey: price.header_key,
-          value: price.value,
-          priceType: price.category_key,
-          metadata: price.metadata
-        })) || [];
-  
-        return {
-          'Customer Name': quote.customer?.name || 'N/A',
-          'Mobile Number': quote.customer?.mobile1 || 'N/A',
-          'Address': quote.customer?.address || 'N/A',
-          'Taluka': quote.customer?.taluka || 'N/A',
-          'District': quote.customer?.district || 'N/A',
-          'Quotation Number': quote.quotation_number,
-          'Status': quote.status.charAt(0).toUpperCase() + quote.status.slice(1),
-          'Created Date': new Date(quote.createdAt).toLocaleDateString(),
-          'Expected Delivery': new Date(quote.expected_delivery_date).toLocaleDateString(),
-          'Finance Needed': quote.finance_needed ? 'Yes' : 'No',
-          'Primary Model Name': modelsData[0]?.modelName || 'N/A',
-          // 'Primary Model Prices': JSON.stringify(modelsData[0]?.prices || []),
-          'Base Model Name': quote.base_model?.model_name || 'N/A',
-          // 'Base Model Prices': JSON.stringify(baseModelPrices),
-          'Salesman Name': quote.creator?.name || 'N/A',
-          'Salesman Mobile': quote.creator?.mobile || 'N/A',
-        };
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Excel exported successfully!',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
       });
   
-      Swal.close();
-      exportToExcel(excelData, 'CustomersReport');
-      
     } catch (error) {
-      Swal.fire('Error', 'Failed to generate Excel report', 'error');
-      console.error('Excel export error:', error);
+      console.error('Error exporting Excel:', error);
+      showError(error.response?.data?.message || 'Failed to export Excel');
     }
   };
 

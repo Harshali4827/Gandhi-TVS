@@ -79,7 +79,7 @@ const AllRoles = () => {
         showSuccess();
       } catch (error) {
         console.log(error);
-        showError();
+        showError(error);
       }
     }
   };

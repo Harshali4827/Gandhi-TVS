@@ -201,7 +201,7 @@ const AttachmentsList = () => {
                 <th>Sr.no</th>
                 <th>Title</th>
                 <th>Description</th>
-                {/* <th>Images</th> */}
+                <th>Images</th>
                 <th>Videos</th>
                 <th>Documents</th>
                 <th>YouTube</th>
@@ -222,7 +222,7 @@ const AttachmentsList = () => {
                     <td>{index + 1}</td>
                     <td>{attachment.title}</td>
                     <td>{attachment.description.substring(0, 50)}{attachment.description.length > 50 ? '...' : ''}</td>
-                    {/* <td>{renderAttachmentPreviews(attachment.attachments, 'image')}</td> */}
+                    <td>{renderAttachmentPreviews(attachment.attachments, 'image')}</td>
                     <td>{renderAttachmentPreviews(attachment.attachments, 'video')}</td>
                     <td>{renderAttachmentPreviews(attachment.attachments, 'document')}</td>
                     <td>{renderAttachmentPreviews(attachment.attachments, 'youtube')}</td>
