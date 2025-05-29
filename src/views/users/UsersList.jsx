@@ -172,8 +172,9 @@ const UsersList = () => {
         </Link>
       </div>
       <div className="table-responsive">
+      <div className="table-wrapper">
         <table className="responsive-table" style={{ overflow: 'auto' }}>
-          <thead>
+          <thead className='table-header-fixed'>
             <tr>
                <th>Sr.no</th>
                <th>Username</th>
@@ -248,6 +249,7 @@ const UsersList = () => {
             )}
           </tbody>
         </table>
+        </div>
       </div>
       <PaginationOptions/>
      </div>

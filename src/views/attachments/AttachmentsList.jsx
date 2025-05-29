@@ -195,8 +195,9 @@ const AttachmentsList = () => {
           </div>
         </div>
         <div className="table-responsive">
+        <div className="table-wrapper">
           <table className="responsive-table" style={{ overflow: 'auto' }}>
-            <thead>
+            <thead className='table-header-fixed'>
               <tr>
                 <th>Sr.no</th>
                 <th>Title</th>
@@ -265,6 +266,7 @@ const AttachmentsList = () => {
               )}
             </tbody>
           </table>
+          </div>
         </div>
         <PaginationOptions/>
       </div>

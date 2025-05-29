@@ -117,8 +117,9 @@ const HeadersList = () => {
         </Link>
       </div>
       <div className="table-responsive">
+      <div className="table-wrapper">
         <table className="responsive-table" style={{ overflow: 'auto' }}>
-          <thead>
+          <thead className='table-header-fixed'>
             <tr>
               <th>Sr.no</th>
                <th>Name</th>
@@ -172,6 +173,7 @@ const HeadersList = () => {
             )}
           </tbody>
         </table>
+        </div>
       </div>
       <PaginationOptions/>
       {csvDialogOpen && (

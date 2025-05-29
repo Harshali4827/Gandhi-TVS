@@ -405,8 +405,9 @@ const CustomersList = () => {
         </div>
  
         <div className="table-responsive">
+        <div className="table-wrapper">
           <table className="responsive-table" style={{ overflow: 'auto' }}>
-            <thead>
+            <thead className='table-header-fixed'>
               <tr>
                 <th>Sr.no</th>
                 <th>Name</th>
@@ -457,6 +458,7 @@ const CustomersList = () => {
               )}
             </tbody>
           </table>
+          </div>
         </div>
         <PaginationOptions />
       </div>
@@ -550,5 +552,5 @@ const CustomersList = () => {
     </div >
   );
 };
- 
+  
 export default CustomersList;

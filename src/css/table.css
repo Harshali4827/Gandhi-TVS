@@ -64,10 +64,11 @@
   .csv-link:hover {
     color: white !important;
   }
-  
   .table-responsive {
     width: 100%;
-    overflow-x: auto;
+    overflow: auto;
+    max-height: 500px; 
+    position: relative; 
   }
   
   .responsive-table {
@@ -76,6 +77,34 @@
     background-color: #fff;
   }
   
+
+  /* Scrollable body styles */
+.table-wrapper {
+  position: relative;
+}
+
+.table-header-fixed {
+  position: sticky;
+  top: -3px;
+  z-index: 10;
+  background: #90D5FF;
+}
+
+.table-body-scroll {
+  display: block;
+  overflow-y: auto;
+  max-height: calc(500px - 40px); 
+}
+/* .responsive-table thead,
+.responsive-table tbody,
+.responsive-table tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+} */
+ 
+
+/* Scrollable body styles end */
   .responsive-table th,
   .responsive-table td {
     padding: 8px;
