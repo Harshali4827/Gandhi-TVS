@@ -5,7 +5,9 @@ import {
   FontAwesomeIcon, faCopy, faFileExcel, faFilePdf,
   getDefaultSearchFields, useTableFilter, usePagination,
   copyToClipboard, exportToCsv, exportToExcel,
-  confirmDelete, showError, showSuccess, axiosInstance, CopyToClipboard
+  confirmDelete, showError, showSuccess, axiosInstance, CopyToClipboard,
+  FaCheckCircle,
+  FaTimesCircle
 } from 'utils/tableImports';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { exportToModelPdf } from 'utils/tableExports';
@@ -42,7 +44,7 @@ const [branchFilterError, setBranchFilterError] = useState('');
   }, []);
   const fetchData = async (branchId = null) => {
     try {
-      let url = '/models';
+      let url = '/models/all/with-prices';
       if (branchId) {
         url = `/models/all/with-prices?branch_id=${branchId}`;
         setIsFiltered(true);
@@ -138,7 +140,29 @@ const [branchFilterError, setBranchFilterError] = useState('');
   //     headers,
   //     isFiltered
   //   );
-
+  
+  const handleStatusUpdate = async (modelId, newStatus) => {
+    try {
+      await axiosInstance.patch(`/models/${modelId}/status`, {
+        status: newStatus
+      });
+      setData(prevData => 
+        prevData.map(model => 
+          model._id === modelId ? { ...model, status: newStatus } : model
+        )
+      );
+      setFilteredData(prevData => 
+        prevData.map(model => 
+          model._id === modelId ? { ...model, status: newStatus } : model
+        )
+      );
+      
+      showSuccess(`Status updated to ${newStatus}`);
+    } catch (error) {
+      console.log('Error updating status', error);
+      showError(error.message);
+    }
+  };
   const handleDelete = async (id) => {
     const result = await confirmDelete();
     if (result.isConfirmed) {
@@ -211,6 +235,7 @@ const [branchFilterError, setBranchFilterError] = useState('');
                 {headers.map(header => (
                   <th key={header._id}>{header.header_key} Price</th>
                 ))}
+                <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -229,6 +254,19 @@ const [branchFilterError, setBranchFilterError] = useState('');
                         {getPriceForHeader(model, header._id)}
                       </td>
                     ))}
+                   <td>
+                    <span className={`status-text ${model.status}`}>
+                      {model.status === 'active' ? (
+                        <>
+                          <FaCheckCircle className="status-icon active-icon" />
+                        </>
+                      ) : (
+                        <>
+                          <FaTimesCircle className="status-icon inactive-icon" />
+                        </>
+                      )}
+                    </span>
+                  </td>
                     <td>
                       <button
                         className="action-button"
@@ -252,7 +290,26 @@ const [branchFilterError, setBranchFilterError] = useState('');
                       >
                      <MenuItem style={{ color: 'black' }}>Edit</MenuItem>
                      </Link>
-
+                  
+  {model.status === 'active' ? (
+  <MenuItem 
+    onClick={() => {
+      handleStatusUpdate(model._id, 'inactive');
+      handleClose();
+    }}
+  >
+    Mark as Inactive
+  </MenuItem>
+) : (
+  <MenuItem 
+    onClick={() => {
+      handleStatusUpdate(model._id, 'active');
+      handleClose();
+    }}
+  >
+    Mark as Active
+  </MenuItem>
+)}
                         <MenuItem onClick={() => handleDelete(model._id)}>Delete</MenuItem>
                       </Menu>
                     </td>

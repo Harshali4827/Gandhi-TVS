@@ -23,7 +23,8 @@ const HeadersList = () => {
   const [menuId, setMenuId] = useState(null);
   const [csvDialogOpen, setCsvDialogOpen] = useState(false);
   const [selectedType, setSelectedType] = useState('');
-
+  const [branches, setBranches] = useState([]);
+  const [selectedBranchId, setSelectedBranchId] = useState('');
 
   const {
     data,
@@ -40,6 +41,7 @@ const HeadersList = () => {
   
   useEffect(() => {
     fetchData();
+    fetchBranches();
   }, []);
   const fetchData = async () => {
     try {
@@ -49,6 +51,14 @@ const HeadersList = () => {
 
     } catch (error) {
       console.log('Error fetching data', error);
+    }
+  };
+  const fetchBranches = async () => {
+    try {
+      const response = await axiosInstance.get('/branches');
+      setBranches(response.data.data || []);
+    } catch (error) {
+      console.log('Error fetching branches', error);
     }
   };
   
@@ -176,7 +186,7 @@ const HeadersList = () => {
         </div>
       </div>
       <PaginationOptions/>
-      {csvDialogOpen && (
+      {/* {csvDialogOpen && (
   <div className="modal-backdrop">
     <div className="modal-content">
       <select
@@ -219,6 +229,82 @@ const HeadersList = () => {
             }
           }}
           className='custom-modal-button custom-modal-button-confirm '
+        >
+          Export
+        </button>
+      </div>
+    </div>
+  </div>
+)} */}
+
+
+
+{csvDialogOpen && (
+  <div className="modal-backdrop">
+    <div className="modal-content">
+      <select
+        value={selectedType}
+        onChange={(e) => setSelectedType(e.target.value)}
+        style={{ padding: '5px', width: '100%', marginBottom: '10px' }}
+      >
+        <option value="">-- Select Model Type --</option>
+        <option value="EV">EV</option>
+        <option value="ICE">ICE</option>
+      </select>
+      
+      <select
+        value={selectedBranchId}
+        onChange={(e) => setSelectedBranchId(e.target.value)}
+        style={{ padding: '5px', width: '100%', marginBottom: '10px' }}
+      >
+        <option value="">-- Select Branch --</option>
+        {branches.map((branch) => (
+          <option key={branch._id} value={branch._id}>
+            {branch.name}
+          </option>
+        ))}
+      </select>
+      
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <button 
+          onClick={() => setCsvDialogOpen(false)} 
+          className='custom-modal-button custom-modal-button-cancel'
+        >
+          Cancel
+        </button>
+        <button
+          onClick={async () => {
+            if (!selectedType) {
+              showError('Please select a type.');
+              return;
+            }
+            if (!selectedBranchId) {
+              showError('Please select a branch.');
+              return;
+            }
+            try {
+              const response = await axiosInstance.get(
+                `/csv/export-template?filled=true&type=${selectedType}&branch_id=${selectedBranchId}`,
+                { responseType: 'blob' }
+              );
+
+              const url = window.URL.createObjectURL(new Blob([response.data]));
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', `exported_data_${selectedType}.csv`);
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+              setCsvDialogOpen(false);
+              setSelectedType('');
+              setSelectedBranchId('');
+            } catch (error) {
+              console.error('CSV export failed:', error);
+              showError('Failed to export CSV.');
+              setCsvDialogOpen(false);
+            }
+          }}
+          className='custom-modal-button custom-modal-button-confirm'
         >
           Export
         </button>
