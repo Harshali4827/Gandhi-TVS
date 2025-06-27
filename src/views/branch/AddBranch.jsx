@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../../css/form.css'
 import { CInputGroup, CInputGroupText, CFormInput,CFormSwitch } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
-import { cilBarcode, cilBuilding, cilEnvelopeClosed, cilGarage,cilHome,cilLocationPin, cilMap, cilPhone } from '@coreui/icons';
+import { cilBarcode, cilBuilding, cilEnvelopeClosed, cilHome,cilImage,cilLocationPin, cilMap, cilPhone } from '@coreui/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { showFormSubmitError, showFormSubmitToast } from 'utils/sweetAlerts';
 import axiosInstance from 'axiosInstance';
@@ -99,7 +99,7 @@ const [formData,setFormData] = useState({
           <div className="user-details">
          <div className="input-box">
               <div className="details-container">
-                <span className="details">Branch name</span>
+                <span className="details">Branch Name</span>
                 <span className="required">*</span>
               </div>
               <CInputGroup>
@@ -241,6 +241,7 @@ const [formData,setFormData] = useState({
               </CInputGroup>
               {errors.gst_number && <p className="error">{errors.gst_number}</p>}
             </div>
+            
             <div className="input-box">
           <span className='details'>Is active?</span>
           <CFormSwitch

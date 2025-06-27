@@ -19,20 +19,10 @@ export const usePagination = (data, initialRowsPerPage = 100) => {
 
   const PaginationButtons = () => (
     <div className="pagination">
-      <button
-        onClick={() => paginate(currentPage - 1)}
-        className="page-icon"
-        disabled={currentPage === 1}
-        title="Previous Page"
-      >
+      <button onClick={() => paginate(currentPage - 1)} className="page-icon" disabled={currentPage === 1} title="Previous Page">
         <ChevronLeft />
       </button>
-      <button
-        onClick={() => paginate(currentPage + 1)}
-        className="page-icon"
-        disabled={currentPage === totalPages}
-        title="Next Page"
-      >
+      <button onClick={() => paginate(currentPage + 1)} className="page-icon" disabled={currentPage === totalPages} title="Next Page">
         <ChevronRight />
       </button>
     </div>
@@ -42,11 +32,7 @@ export const usePagination = (data, initialRowsPerPage = 100) => {
     <div className="pagination-options-container">
       <div className="rows-per-page">
         <label htmlFor="rows-per-page">Rows per page:</label>
-        <select
-          id="rows-per-page"
-          value={rowsPerPage}
-          onChange={handleRowsPerPageChange}
-        >
+        <select id="rows-per-page" value={rowsPerPage} onChange={handleRowsPerPageChange}>
           <option value={100}>100</option>
           <option value={150}>150</option>
           <option value={200}>200</option>
@@ -66,6 +52,6 @@ export const usePagination = (data, initialRowsPerPage = 100) => {
     PaginationButtons,
     PaginationOptions,
     handleRowsPerPageChange,
-    paginate,
+    paginate
   };
 };
