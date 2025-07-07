@@ -1,0 +1,45 @@
+/* Black background covering full page */
+.landing-container {
+    background-color: #000; /* black background */
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Top-right login button */
+  .header {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    z-index: 10;
+  }
+  
+  .login-button {
+    background-color: #243c7c;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .login-button:hover {
+    background-color: #1a2a5c;
+  }
+  
+  /* Center GIF/Image */
+  .center-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .center-image {
+    max-width: 400px; /* Adjust size as needed */
+    width: 100%;
+    height: auto;
+  }
+  

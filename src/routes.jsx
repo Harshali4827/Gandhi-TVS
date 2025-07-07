@@ -38,6 +38,11 @@ const renderRoutes = (routes = []) => (
 export const routes = [
   {
     exact: 'true',
+    path: '/',
+    element: lazy(() => import('./views/landing/LandingPage'))
+  },
+  {
+    exact: 'true',
     path: '/auth/signup-1',
     element: lazy(() => import('./views/auth/signup/SignUp1'))
   },
@@ -66,7 +71,7 @@ export const routes = [
         path: '/app/dashboard/analytics',
         element: lazy(() => import('./views/dashboard'))
       },
-    
+
       {
         exact: 'true',
         path: '/roles/create-role',
@@ -127,7 +132,7 @@ export const routes = [
         path: '/model/model-list',
         element: lazy(() => import('./views/model/ModelList'))
       },
-     
+
       {
         exact: 'true',
         path: '/headers/add-header',

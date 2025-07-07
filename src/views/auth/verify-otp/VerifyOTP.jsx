@@ -20,7 +20,7 @@ const VerifyOTP = () => {
 
       if (response.data.success) {
         localStorage.setItem('token', response.data.token);
-        console.log('token',response.data.token)
+        console.log('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         navigate('/home');
       } else {
@@ -34,49 +34,51 @@ const VerifyOTP = () => {
   };
 
   return (
-    <div className="auth-wrapper" 
-    style={{
-      backgroundImage: `url(${backgroundImage})`,
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-    }}>
     <div
-    style={{
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      backgroundColor: 'rgba(255, 255, 255, 0.85)', 
-      zIndex: 0,
-    }}
-  />
-    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-      <Card style={{ width: '400px' }} className="p-4">
-        <h4 className="text-center mb-4">Verify OTP</h4>
-        <Form onSubmit={handleVerify}>
-          <Form.Group className="mb-3" controlId="otp">
-            <Form.Label>Enter OTP</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter the OTP sent to your mobile"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              required
-            />
-          </Form.Group>
+      className="auth-wrapper"
+      // style={{
+      //   backgroundImage: `url(${backgroundImage})`,
+      //   backgroundSize: 'cover',
+      //   backgroundRepeat: 'no-repeat',
+      //   backgroundPosition: 'center',
+      // }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgb(0 0 0)',
+          zIndex: 0
+        }}
+      />
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+        <Card style={{ width: '400px' }} className="p-4">
+          <h4 className="text-center mb-4">Verify OTP</h4>
+          <Form onSubmit={handleVerify}>
+            <Form.Group className="mb-3" controlId="otp">
+              <Form.Label>Enter OTP</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter the OTP sent to your mobile"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                required
+              />
+            </Form.Group>
 
-          {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+            {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
-          <div className="d-grid gap-2">
-            <Button variant="primary" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Verifying...' : 'Verify OTP'}
-            </Button>
-          </div>
-        </Form>
-      </Card>
-    </div>
+            <div className="d-grid gap-2">
+              <Button variant="primary" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Verifying...' : 'Verify OTP'}
+              </Button>
+            </div>
+          </Form>
+        </Card>
+      </div>
     </div>
   );
 };
